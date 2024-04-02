@@ -1,0 +1,30 @@
+:root {
+    --main-green: #1DB954;
+    --main-black: #191414;
+    --web-big-text: 36px;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--main-black);
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+.login-btn {
+    background-color: #FFAF45;
+    color: white;
+    border-radius: 15px;
+    width: 25%;
+    margin: auto;
+}
+.login-btn:hover{
+    background-color: aqua;
+    color: black;
+}
+h1{
+    font-size: var(--web-big-text);
+    text-align: center;
+    color: var(--main-green);
+    font-weight: 700;
+    margin: 35px auto;
+}
