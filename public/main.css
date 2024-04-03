@@ -3,6 +3,7 @@
     --main-black: #191414;
     --web-big-text: 36px;
 }
+/*Basic configuration */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--main-black);
@@ -27,4 +28,28 @@ h1{
     color: var(--main-green);
     font-weight: 700;
     margin: 35px auto;
+}
+
+/* User information */
+.user-container img{
+    border-radius: 20%;
+}
+.user-container h2{
+    font-size: 24px;
+    margin: 15px;
+}
+/* Top 5 songs */
+.track-container{
+    background-color: #535353;
+    border-radius: 15px;
+    padding: 15px;
+}
+.track-container img{
+    width: 150px;
+}
+.track-container h4{
+    font-size: 20px;
+}
+.track-container p{
+    font-size: 16px;
 }
