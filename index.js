@@ -43,7 +43,7 @@ app.get("/login", async (req, res) => {
         console.log("Entró al login... /login");
         //random string 16 characters
         var state = 'randomStringrandomString';
-        var scope = 'user-read-private user-read-email';
+        var scope = 'user-read-private user-read-email user-top-read';
 
         const loginURL = 'https://accounts.spotify.com/authorize?' +
             querystring.stringify({
@@ -54,7 +54,7 @@ app.get("/login", async (req, res) => {
                 state: state,
                 show_dialog: true
             });
-        //console.log(login.data);
+        //Redirecciona a la página de inicio de sesión de Spotify
         res.redirect(loginURL);
         }
     catch (error) {
@@ -63,21 +63,49 @@ app.get("/login", async (req, res) => {
 })
 
 app.get("/", async (req, res) => {
-    //console.log(accessToken);
-    //Verifica si existe token de acceso
     try {
+    //Code es el código de autorización que se obtiene al iniciar sesión
     const code = req.query.code;
+    //Access token es el token de acceso que se obtiene al canjear el code
     const accessToken = req.query.access_token;
-    //If code exists meaning user is logged in but there is no access token
     if(code && !accessToken){
-        //Canjear code por access token
         console.log("Canjeando code por access token");
         res.redirect(`/generate-token?code=${code}`);
     } 
-    //If access token exists
     else if (accessToken) {
-        console.log("Sesión iniciada con exito!")
-        res.render("index.ejs", {token: accessToken})
+        console.log("Sesión iniciada con exito!");
+
+        //Obtener información del usuario
+        const user = await axios.get(SPOTIFY_API_URL + "/me", {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        
+        
+        //Obtener 5 canciones más escuchadas del mes actual del usuario
+        const topTracks_Array = await axios.get(SPOTIFY_API_URL + "/me/top/tracks?" + 
+            querystring.stringify({
+                time_range: 'short_term',
+                limit: 5
+            }),{
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        console.log("Top Tracks:", topTracks_Array.data.items); 
+        const topTracks = topTracks_Array.data.items; //Arreglo de canciones
+        
+
+        //Array de la información que se le enviará al frontend
+        const data = {
+            profile_picture: user.data.images[0].url,
+            display_name: user.data.display_name,
+            topTracks: topTracks,
+            token: accessToken
+        }
+        //Imprimir información del usuario
+        res.render("index.ejs", {data: data})
 
     } else {
         console.log("No hay token de acceso ni code");

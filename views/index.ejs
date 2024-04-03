@@ -14,13 +14,18 @@
     </div>
     <div class="row">
         <!-- TODO: If para mostrar perfil o botón -->
-        <% if(locals.token) {%>
-            <p><%= token %></p>
-        <% } else {%>
+        <% if(!locals.data ) {%>
             <a href="/login" class="btn login-btn">Iniciar sesisión</a>
+        <% } else {%>
+            <div class="user-container container-fluid d-flex justify-content-center">
+                <div class="col-6 d-flex justify-content-center align-items-center">
+                    <img src="<%= locals.data.profile_picture %>" alt="User image" class="user-image">
+                    <h2><%= locals.data.display_name %></h2>
+                </div>
+        </div>
         <% } %>
-        
     </div>
+
     <div class="row">
         <div class="col-4">
             <div class="top5-container container-fluid">
@@ -28,7 +33,21 @@
                     <h3>Tu top 5 canciones del mes</h3>
                 </div>
                 <div class="row">
-                    <!-- TODO: Aqui ira una canción -->
+                    <!-- Contenedor para cada canción -->
+                        <% if(locals.data) {%>
+                                <% data.topTracks.forEach(track => { %>
+                                    <div class="container track-container d-flex mb-4 align-items-center">
+                                        <div class="col-12 col-lg-4">
+                                            <img src="<%= track.album.images[0].url %>" alt="Song image" class="song-image">
+                                        </div>
+                                        <div class="col-12 col-lg-8">
+                                            <h4><%= track.name %></h4>
+                                            <p><%= track.artists[0].name %></p>
+                                        </div>     
+                                    </div>
+                                <% }); %>
+                        <% }; %>
+                    
                 </div>
             </div>
         </div>
