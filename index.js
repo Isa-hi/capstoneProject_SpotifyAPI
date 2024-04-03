@@ -7,6 +7,8 @@ const API_URL = "https://accounts.spotify.com/api";
 const SPOTIFY_API_URL = "https://api.spotify.com/v1"
 const client_id = "7a870c8794734109b7847d708615ef1b";
 const client_secret = "ebd66825106345b7a750bbc94d15a355";
+const url_produccion = "https://capstoneproject-spotifyapi.onrender.com/";
+const url_desarrollo = "http://localhost:3000/";
 import querystring from 'querystring';
 let accessToken;
 
@@ -20,7 +22,7 @@ app.get("/generate-token", async (req, res) => {
         const tokenRequest = await axios.post( API_URL + "/token", 
         querystring.stringify({
             code: code,
-            redirect_uri: 'http://localhost:3000/',
+            redirect_uri: url_produccion,
             grant_type: 'authorization_code'
         }), 
         {
@@ -50,7 +52,7 @@ app.get("/login", async (req, res) => {
                 response_type: 'code',
                 client_id: client_id,
                 scope: scope,
-                redirect_uri: 'http://localhost:3000/',
+                redirect_uri: url_produccion,
                 state: state,
                 show_dialog: true
             });
