@@ -9,6 +9,7 @@ const client_id = "7a870c8794734109b7847d708615ef1b";
 const client_secret = "ebd66825106345b7a750bbc94d15a355";
 const url_produccion = "https://capstoneproject-spotifyapi.onrender.com/";
 const url_desarrollo = "http://localhost:3000/";
+const url_en_uso = url_produccion;
 import querystring from 'querystring';
 let accessToken;
 
@@ -22,7 +23,7 @@ app.get("/generate-token", async (req, res) => {
         const tokenRequest = await axios.post( API_URL + "/token", 
         querystring.stringify({
             code: code,
-            redirect_uri: url_produccion,
+            redirect_uri: url_en_uso,
             grant_type: 'authorization_code'
         }), 
         {
@@ -33,7 +34,7 @@ app.get("/generate-token", async (req, res) => {
         }
         );
         accessToken = tokenRequest.data.access_token; //Access_Token
-        console.log('Access_Token Generado: ', tokenRequest.data.access_token); //Access_Token
+        console.log('Access_Token Generado'); //Access_Token
         res.redirect("/" + `?access_token= ${accessToken}`);
     } catch (error) {
         console.error('Error:', error);
@@ -52,7 +53,7 @@ app.get("/login", async (req, res) => {
                 response_type: 'code',
                 client_id: client_id,
                 scope: scope,
-                redirect_uri: url_produccion,
+                redirect_uri: url_en_uso,
                 state: state,
                 show_dialog: true
             });
@@ -95,15 +96,16 @@ app.get("/", async (req, res) => {
                 'Authorization': 'Bearer ' + accessToken
             }
         });
-        console.log("Top Tracks:", topTracks_Array.data.items); 
+        //console.log("Top Tracks:", topTracks_Array.data.items); 
         const topTracks = topTracks_Array.data.items; //Arreglo de canciones
-        
+        const topTrack = topTracks[0]; //Primera canción del arreglo
 
         //Array de la información que se le enviará al frontend
         const data = {
             profile_picture: user.data.images[0].url,
             display_name: user.data.display_name,
             topTracks: topTracks,
+            preview_url: topTrack.preview_url,
             token: accessToken
         }
         //Imprimir información del usuario
@@ -121,3 +123,6 @@ app.get("/", async (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 })
+
+
+

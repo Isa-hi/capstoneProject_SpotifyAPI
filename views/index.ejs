@@ -6,54 +6,79 @@
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="/main.css">
-    <title>Capstone Project | SpotiCollage</title>
+    <title>Capstone Project | Trackify</title>
 </head>
 <body>
-    <div class="row d-flex justify-content-center">
-        <h1>SpotiCollage</h1>
+    <div class="row d-flex header-container">
+        <h1 class="logo-text col-5 col-md-3 col-lg-2">Trackify</h1>
+        <% if (locals.data) {%>
+            <div class="user-container col-5 d-flex align-items-center">
+                <img src="<%= locals.data.profile_picture %>" alt="User image" class="user-image">
+                <h2><%= locals.data.display_name %></h2>
+            </div>
+        <% } %>
     </div>
     <div class="row">
-        <!-- TODO: If para mostrar perfil o botón -->
+        <!-- Si no está logeado muestra landing page -->
         <% if(!locals.data ) {%>
-            <a href="/login" class="btn login-btn">Iniciar sesisión</a>
-        <% } else {%>
-            <div class="user-container container-fluid d-flex justify-content-center">
-                <div class="col-6 d-flex justify-content-center align-items-center">
-                    <img src="<%= locals.data.profile_picture %>" alt="User image" class="user-image">
-                    <h2><%= locals.data.display_name %></h2>
-                </div>
-        </div>
+            <h1 class="biggest-text col-12 col-md-6">
+                Lo mejor del mes, en 5 canciones
+            </h1>
+            <div class="col-12">
+                <a href="/login" class="btn btn-login">Iniciar Sesión</a>
+            </div>
         <% } %>
     </div>
 
+    <!-- Si está logeado muestra top 5 canciones -->
     <div class="row">
-        <div class="col-4">
+        <div class="col-12">
             <div class="top5-container container-fluid">
-                <div class="row">
-                    <h3>Tu top 5 canciones del mes</h3>
-                </div>
-                <div class="row">
                     <!-- Contenedor para cada canción -->
                         <% if(locals.data) {%>
-                                <% data.topTracks.forEach(track => { %>
-                                    <div class="container track-container d-flex mb-4 align-items-center">
-                                        <div class="col-12 col-lg-4">
+                        <div class="row">
+                            <!-- Cotenedor para la primera canción -->
+                            <div class="top1-song mb-4">
+                                <div class="col-4 col-xl-3">
+                                    <img src="<%= locals.data.topTracks[0].album.images[0].url %>" alt="Song image" class="song-image">
+                                </div>
+                                <div class="col-6">
+                                    <h4>1</h4>
+                                    <h5><%= locals.data.topTracks[0].name %></h5>
+                                    <p><%= locals.data.topTracks[0].artists[0].name %></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                                <% data.topTracks.forEach((track, index) => { %>
+                                    <div class="col-12 container track-container mb-3 align-items-center">
+                                        <h4 class="number"> <%= ++index %></h4>
+                                        <div class=""">
                                             <img src="<%= track.album.images[0].url %>" alt="Song image" class="song-image">
                                         </div>
-                                        <div class="col-12 col-lg-8">
-                                            <h4><%= track.name %></h4>
+                                        <div class="col-md-10 track-info-container">
+                                            <h5><%= track.name %></h5>
                                             <p><%= track.artists[0].name %></p>
                                         </div>     
                                     </div>
                                 <% }); %>
                         <% }; %>
-                    
-                </div>
+                        </div>
             </div>
         </div>
         <div class="col-8">
             <div class="collage-container"></div>
         </div>
     </div>
+    <% if(locals.data) {%>
+    <button id="play-button" class="btn-login">Mostrar mis 5 canciones más escuchadas</button>
+    <% } %>
+    <audio id="audio-player" preload="auto"></audio>
+    <script>
+        window.topTrackPreviewUrl = "<%= locals.data && locals.data.topTracks && locals.data.topTracks.length > 0 ? locals.data.topTracks[0].preview_url : '' %>";
+    </script>
+    <script src="/script.js"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
 </body>
 </html>

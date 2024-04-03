@@ -1,55 +1,99 @@
 :root {
-    --main-green: #1DB954;
-    --main-black: #191414;
-    --web-big-text: 36px;
+    --main-purple: #7000FF;
+    --main-black: #121B1F;
+    --web-biggest-text: 96px;
+    --web-title-text: 48px;
+    --logo-size: 32px;
+    --mobile-biggest-text: 48px;
+    --mobile-title-text: 20px;
 }
 /*Basic configuration */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: var(--main-black);
+    font-family: 'poppins', sans-serif;
+    background: linear-gradient(to bottom, var(--main-black) 10%, var(--main-purple) 90%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
     color: white;
     margin: 0;
     padding: 0;
 }
-.login-btn {
-    background-color: #FFAF45;
-    color: white;
-    border-radius: 15px;
-    width: 25%;
-    margin: auto;
+.logo-text {
+    font-size: var(--logo-size);
 }
-.login-btn:hover{
-    background-color: aqua;
-    color: black;
-}
-h1{
-    font-size: var(--web-big-text);
-    text-align: center;
-    color: var(--main-green);
+/* Login page */
+.biggest-text {
+    font-size: var(--mobile-biggest-text);
     font-weight: 700;
-    margin: 35px auto;
+    margin: 15px
 }
-
-/* User information */
+.btn-login {
+    background-color: #FFC94A;
+    color: var(--main-black);
+    width: 300px;
+    margin: 15px;
+    font-size: var(--mobile-title-text);
+    font-weight: 700;
+}
+/* Main page */
+.header-container {
+    padding: 25px;
+}
 .user-container img{
-    border-radius: 20%;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    /*Fit the container*/
+    object-fit: cover;
 }
 .user-container h2{
-    font-size: 24px;
-    margin: 15px;
+    margin-left: 15px;
 }
-/* Top 5 songs */
-.track-container{
-    background-color: #535353;
-    border-radius: 15px;
-    padding: 15px;
+.track-container {
+    display: flex;
 }
 .track-container img{
-    width: 150px;
+    width: 100px;
 }
 .track-container h4{
-    font-size: 20px;
+    font-size: var(--mobile-biggest-text);
+    font-weight: 700;
+    margin-right: 10px;
 }
-.track-container p{
-    font-size: 16px;
+.track-container h5{
+    font-size: var(--mobile-title-text);
+    font-weight: 700;
+}
+.track-info-container{
+    margin-left: 10px;
+}
+.top1-song{
+    display: none;
+}
+
+/* Initial State */
+.top5-container{
+    display: none;
+}
+
+/* Media queries */
+@media (min-width: 992px) {
+    /* Hide the first song */
+    .track-container:first-child{
+        display: none;
+    }
+    .top1-song{
+        display: flex;
+    }
+    .top1-song img{
+        width: 300px;
+    }
+    .top1-song h4{
+        font-size: var(--web-biggest-text);
+        font-weight: 700;
+    }
+    .top1-song h5{
+        font-size: var(--web-title-text);
+    }
 }
